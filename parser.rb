@@ -3,7 +3,7 @@ require "nokogiri"
 require "./config"
 
 class Firefox
-  attr_reader :version, :changes
+  attr_reader :version, :changes, :url
   def initialize(version)
     @version = version
     @changes = []
@@ -11,6 +11,10 @@ class Firefox
 
   def add(tag, description)
     @changes << Change.new(tag, description)
+  end
+
+  def url=(url)
+    @url = url
   end
 
   class Change
@@ -31,6 +35,7 @@ class Parser
     Dir["#{DATA_DIR}/*"].each do |path|
       firefox = Firefox.new(File.basename(path, ".html"))
       html = Nokogiri::HTML.parse(File.read(path))
+      firefox.url = html.xpath('//link[@rel="canonical"]/@href').text
       html.css("#sec-whatsnew > ul > li").each do |change|
         tag = change.css(".tag")
         next unless tag
