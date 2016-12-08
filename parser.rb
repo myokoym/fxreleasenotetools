@@ -32,7 +32,7 @@ class Parser
 
   def parse
     firefoxes = []
-    Dir["#{DATA_DIR}/*"].each do |path|
+    Dir["#{DATA_DIR}/*"].sort_by {|v| File.basename(v, ".html") }.each do |path|
       firefox = Firefox.new(File.basename(path, ".html"))
       html = Nokogiri::HTML.parse(File.read(path))
       firefox.url = html.xpath('//link[@rel="canonical"]/@href').text
