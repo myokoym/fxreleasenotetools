@@ -11,7 +11,7 @@ versions.each do |version|
   MARKDOWN
   version.changes.each do |change|
     markdown << <<-MARKDOWN
-  * #{ReverseMarkdown.convert(change.description)}
+  * #{ReverseMarkdown.convert(change.description).strip}
     MARKDOWN
   end
 end
