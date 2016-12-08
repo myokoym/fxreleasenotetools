@@ -1,5 +1,7 @@
 require "./parser"
 
+require "reverse_markdown"
+
 markdown = ""
 
 versions = Parser.new.parse
@@ -9,7 +11,7 @@ versions.each do |version|
   MARKDOWN
   version.changes.each do |change|
     markdown << <<-MARKDOWN
-  * #{change.description}
+  * #{ReverseMarkdown.convert(change.description)}
     MARKDOWN
   end
 end
