@@ -8,9 +8,9 @@ versions.each do |version|
 * [Firefox #{version.version} リリースノート](#{version.url})
   MARKDOWN
   version.changes.each do |change|
-  markdown << <<-MARKDOWN
+    markdown << <<-MARKDOWN
   * #{change.description}
-  MARKDOWN
+    MARKDOWN
   end
 end
 
