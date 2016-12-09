@@ -38,7 +38,7 @@ class Parser
       firefox.url = html.xpath('//link[@rel="canonical"]/@href').text
       html.css("#sec-whatsnew > ul > li").each do |change|
         tag = change.css(".tag")
-        next unless tag
+        next if tag.empty?
         firefox.add(tag.inner_text, change.css("p").inner_html)
       end
       firefoxes << firefox
