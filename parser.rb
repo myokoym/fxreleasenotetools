@@ -46,4 +46,21 @@ class Parser
     end
     firefoxes
   end
+
+  def parse_dev
+    firefoxes = []
+    Dir["#{DATA_DIR}/*"].sort_by {|v| File.basename(v, ".html") }.each do |path|
+      firefox = Firefox.new(File.basename(path, ".html"))
+      html = Nokogiri::HTML.parse(File.read(path))
+      html.xpath('//comment()').remove
+      firefox.url = html.xpath('//link[@rel="canonical"]/@href').text
+      html.css("#sec-whatsnew > ul > li").each do |change|
+        tag = change.css(".tag")
+        next if tag.empty?
+        firefox.add(tag.inner_text, change.css("p").inner_html)
+      end
+      firefoxes << firefox
+    end
+    firefoxes
+  end
 end
